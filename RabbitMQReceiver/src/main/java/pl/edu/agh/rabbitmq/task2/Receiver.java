@@ -1,20 +1,16 @@
-package pl.edu.agh.rabbitmq.tutorial2;
+package pl.edu.agh.rabbitmq.task2;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import pl.edu.agh.rabbitmq.util.Utils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-/**
- * @author lewap
- * @since 21.05.16.
- */
 class Receiver {
     private static final Random RANDOM = new Random();
     private static final int SLEEP_TIME_BASE_SECONDS = 2;
@@ -35,7 +31,7 @@ class Receiver {
     void startReceiving() throws IOException {
         Consumer consumer = createRabbitConsumer();
 
-        Boolean autoAck = true;
+        Boolean autoAck = false;
         // noinspection ConstantConditions
         channel.basicConsume(queueName, autoAck, consumer);
     }
@@ -47,23 +43,21 @@ class Receiver {
                     throws IOException {
                 String receivedMessage = new String(body, StandardCharsets.UTF_8);
                 System.out.printf("Received '%s' with consumer tag '%s'\n", receivedMessage, consumerTag);
-                try {
-                    sleepForSeconds(SLEEP_TIME_BASE_SECONDS);
-                } catch (InterruptedException e) {
-                    System.err.println("Problem with sleeping: " + e.getMessage());
-                }
+                simulateComputationUsing(channel, envelope);
             }
         };
     }
 
-    private void sleepForSeconds(int seconds) throws InterruptedException {
-        int additionalSeconds = RANDOM.nextInt(SLEEP_TIME_MAX_ADDITIONAL_SECONDS);
-        int totalSeconds = seconds + additionalSeconds;
-
-        System.out.printf("  Sleeping for %d seconds\n", totalSeconds);
-        for (int secondsLeft = totalSeconds; secondsLeft >= 0; --secondsLeft) {
-            System.out.printf("\r    seconds left: %02d", secondsLeft);
-            TimeUnit.SECONDS.sleep(1);
+    @SuppressWarnings("Duplicates")
+    private void simulateComputationUsing(Channel channel, Envelope envelope) throws IOException {
+        try {
+            Utils.sleepForSeconds(SLEEP_TIME_BASE_SECONDS, SLEEP_TIME_MAX_ADDITIONAL_SECONDS);
+        } catch (InterruptedException e) {
+            System.err.println("Problem with sleeping: " + e.getMessage());
+        } finally {
+            final Boolean multiple = false;
+            //noinspection ConstantConditions, ThrowFromFinallyBlock
+            channel.basicAck(envelope.getDeliveryTag(), multiple);
         }
     }
 }

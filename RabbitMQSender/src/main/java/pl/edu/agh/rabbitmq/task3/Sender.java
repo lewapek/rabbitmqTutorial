@@ -1,4 +1,4 @@
-package pl.edu.agh.rabbitmq.tutorial2;
+package pl.edu.agh.rabbitmq.task3;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -6,22 +6,18 @@ import com.rabbitmq.client.MessageProperties;
 
 import java.io.IOException;
 
-/**
- * @author lewap
- * @since 21.05.16.
- */
 class Sender {
-    private static final String NAMELESS_EXCHANGE = "";
+    private static final String UNNECESSARY_ROUTING_KEY = "";
     private final Channel channel;
-    private final String queueName;
+    private final String exchangeName;
 
-    private Sender(Channel channel, String queueName) {
+    private Sender(Channel channel, String exchangeName) {
         this.channel = channel;
-        this.queueName = queueName;
+        this.exchangeName = exchangeName;
     }
 
-    static Sender with(Channel channel, String queueName) {
-        return new Sender(channel, queueName);
+    static Sender with(Channel channel, String exchangeName) {
+        return new Sender(channel, exchangeName);
     }
 
     void publishMessages(int quantity) throws IOException {
@@ -29,7 +25,7 @@ class Sender {
 
         for (int i = 1; i <= quantity; ++i) {
             String currentMessage = "message " + i;
-            channel.basicPublish(NAMELESS_EXCHANGE, queueName, properties, currentMessage.getBytes());
+            channel.basicPublish(exchangeName, UNNECESSARY_ROUTING_KEY, properties, currentMessage.getBytes());
         }
     }
 }

@@ -1,4 +1,4 @@
-package pl.edu.agh.rabbitmq.tutorial2;
+package pl.edu.agh.rabbitmq.task1;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -8,13 +8,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-/**
- * @author lewap
- * @since 21.05.16.
- */
 public class Runner {
-    private static final String QUEUE_NAME = "tutorial2Queue";
-    private static final int MESSAGES_QUANTITY = 20;
+    private static final String QUEUE_NAME = "tutorial1Queue";
+    private static final int MESSAGES_QUANTITY = 100;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -22,7 +18,7 @@ public class Runner {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        declareDurableQueueIn(channel);
+        declareQueueIn(channel);
 
         System.out.printf("Before publishing %d messages\n", MESSAGES_QUANTITY);
 
@@ -35,13 +31,13 @@ public class Runner {
         connection.close();
     }
 
-    private static void declareDurableQueueIn(Channel channel) throws IOException {
-        Boolean durable = true;
-        Boolean exclusive = false;
-        Boolean autoDelete = false;
-        Map<String, Object> arguments = null;
+    private static void declareQueueIn(Channel channel) throws IOException {
+        final Boolean durable = false;
+        final Boolean exclusive = false;
+        final Boolean autoDelete = false;
+        final Map<String, Object> arguments = null;
 
-        // noinspection ConstantConditions
+        //noinspection ConstantConditions
         channel.queueDeclare(QUEUE_NAME, durable, exclusive, autoDelete, arguments);
     }
 }

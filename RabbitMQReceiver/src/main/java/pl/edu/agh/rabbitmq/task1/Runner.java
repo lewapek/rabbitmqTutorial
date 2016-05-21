@@ -1,4 +1,4 @@
-package pl.edu.agh.rabbitmq.tutorial2;
+package pl.edu.agh.rabbitmq.task1;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -8,13 +8,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-/**
- * @author lewap
- * @since 21.05.16.
- */
 public class Runner {
-    private static final String QUEUE_NAME = "tutorial2Queue";
-    private static final int QOS_PREFETCH_COUNT = 1;
+    private static final String QUEUE_NAME = "tutorial1Queue";
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -22,16 +17,15 @@ public class Runner {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        declareDurableQueueIn(channel);
-        channel.basicQos(QOS_PREFETCH_COUNT);
+        declareQueueIn(channel);
 
         System.out.println("Before receiving");
         Receiver receiver = Receiver.with(channel, QUEUE_NAME);
         receiver.startReceiving();
     }
 
-    private static void declareDurableQueueIn(Channel channel) throws IOException {
-        final Boolean durable = true;
+    private static void declareQueueIn(Channel channel) throws IOException {
+        final Boolean durable = false;
         final Boolean exclusive = false;
         final Boolean autoDelete = false;
         final Map<String, Object> arguments = null;

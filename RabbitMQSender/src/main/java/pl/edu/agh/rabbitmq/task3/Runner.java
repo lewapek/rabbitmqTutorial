@@ -1,20 +1,17 @@
-package pl.edu.agh.rabbitmq.tutorial1;
+package pl.edu.agh.rabbitmq.task3;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import pl.edu.agh.rabbitmq.util.ExchangeType;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-/**
- * @author lewap
- * @since 21.05.16.
- */
 public class Runner {
-    private static final String QUEUE_NAME = "tutorial1Queue";
-    private static final int MESSAGES_QUANTITY = 100;
+    private static final String EXCHANGE_NAME = "tutorial3.exchange";
+    private static final int MESSAGES_QUANTITY = 20;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -22,11 +19,11 @@ public class Runner {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        declareQueueIn(channel);
+        declareDurableExchangeIn(channel);
 
         System.out.printf("Before publishing %d messages\n", MESSAGES_QUANTITY);
 
-        Sender producer = Sender.with(channel, QUEUE_NAME);
+        Sender producer = Sender.with(channel, EXCHANGE_NAME);
         producer.publishMessages(MESSAGES_QUANTITY);
 
         System.out.println("Messages published");
@@ -35,13 +32,10 @@ public class Runner {
         connection.close();
     }
 
-    private static void declareQueueIn(Channel channel) throws IOException {
-        final Boolean durable = false;
-        final Boolean exclusive = false;
-        final Boolean autoDelete = false;
-        final Map<String, Object> arguments = null;
+    private static void declareDurableExchangeIn(Channel channel) throws IOException {
+        final Boolean durable = true;
 
         //noinspection ConstantConditions
-        channel.queueDeclare(QUEUE_NAME, durable, exclusive, autoDelete, arguments);
+        channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.FANOUT, durable);
     }
 }

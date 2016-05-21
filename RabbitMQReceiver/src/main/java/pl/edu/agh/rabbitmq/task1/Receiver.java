@@ -1,4 +1,4 @@
-package pl.edu.agh.rabbitmq.tutorial1;
+package pl.edu.agh.rabbitmq.task1;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -9,10 +9,6 @@ import com.rabbitmq.client.Envelope;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-/**
- * @author lewap
- * @since 21.05.16.
- */
 class Receiver {
     private final Channel channel;
     private final String queueName;
