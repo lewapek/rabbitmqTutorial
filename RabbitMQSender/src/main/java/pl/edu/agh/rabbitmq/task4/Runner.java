@@ -12,12 +12,9 @@ import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class Runner {
-    public static final Random RANDOM = new Random();
+    private static final Random RANDOM = new Random();
     private static final String EXCHANGE_NAME = "task4Exchange";
     private static final int ITERATIONS = 4;
-    private static final int RED_MESSAGES_QUANTITY = 1;
-    private static final int GREEN_MESSAGES_QUANTITY = 2;
-    private static final int BLUE_MESSAGES_QUANTITY = 2;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -32,7 +29,7 @@ public class Runner {
         Sender senderBlue = Sender.with(channel, EXCHANGE_NAME, RoutingKey.BLUE);
         List<Sender> senders = Arrays.asList(senderRed, senderGreen, senderBlue);
 
-        System.out.printf("Before publishing %d messages\n", RED_MESSAGES_QUANTITY);
+        System.out.println("Before publishing %d messages");
         publishAll(senders, ITERATIONS);
 
         System.out.println("Messages published");
