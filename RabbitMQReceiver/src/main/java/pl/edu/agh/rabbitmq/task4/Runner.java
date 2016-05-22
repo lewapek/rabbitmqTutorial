@@ -21,6 +21,7 @@ public class Runner {
     public static void main(String[] args) throws IOException, TimeoutException {
         if (args.length != 1) {
             System.err.println("Wrong number of arguments. Provide routing keys.");
+            System.err.println("Routing keys is subset of \"rgb\".");
             System.exit(1);
         }
         final String keysAsString = args[0];
