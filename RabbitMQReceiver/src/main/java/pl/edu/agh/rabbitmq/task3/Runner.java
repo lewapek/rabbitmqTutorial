@@ -10,7 +10,7 @@ import java.util.concurrent.TimeoutException;
 
 public class Runner {
     private static final String UNNECESSARY_ROUTING_KEY = "";
-    private static final String EXCHANGE_NAME = "tutorial3.exchange";
+    private static final String EXCHANGE_NAME = "task3Exchange";
     private static final int QOS_PREFETCH_COUNT = 1;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();

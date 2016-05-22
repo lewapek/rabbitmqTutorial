@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public class Runner {
-    private static final String QUEUE_NAME = "tutorial2Queue";
+    private static final String QUEUE_NAME = "task2Queue";
     private static final int MESSAGES_QUANTITY = 20;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
