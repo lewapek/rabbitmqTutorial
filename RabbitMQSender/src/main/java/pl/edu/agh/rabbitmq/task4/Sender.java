@@ -7,6 +7,7 @@ import com.rabbitmq.client.MessageProperties;
 import java.io.IOException;
 
 class Sender {
+    private static final AMQP.BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
     private final Channel channel;
     private final String exchangeName;
     private final String routingKey;
@@ -21,16 +22,8 @@ class Sender {
         return new Sender(channel, exchangeName, routingKey);
     }
 
-    void publishMessages(int quantity) throws IOException {
-        final AMQP.BasicProperties properties = MessageProperties.PERSISTENT_TEXT_PLAIN;
-
-        for (int i = 1; i <= quantity; ++i) {
-            String currentMessage = composeMessageBasedOn(i);
-            channel.basicPublish(exchangeName, routingKey, properties, currentMessage.getBytes());
-        }
-    }
-
-    private String composeMessageBasedOn(int index) {
-        return routingKey + " " + index;
+    void publishMessage(String message) throws IOException {
+        final String messageToSend = message + "[" + routingKey + "]";
+        channel.basicPublish(exchangeName, routingKey, properties, messageToSend.getBytes());
     }
 }

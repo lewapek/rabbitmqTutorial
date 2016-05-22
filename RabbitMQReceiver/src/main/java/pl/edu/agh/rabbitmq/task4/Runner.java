@@ -6,15 +6,14 @@ import com.rabbitmq.client.ConnectionFactory;
 import pl.edu.agh.rabbitmq.util.ExchangeType;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 public class Runner {
     private static final String EXCHANGE_NAME = "task4Exchange";
+    private static final String QUEUE_NAME_PREFIX = "task4Queue.";
     private static final int QOS_PREFETCH_COUNT = 1;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -25,22 +24,23 @@ public class Runner {
             System.exit(1);
         }
         final String keysAsString = args[0];
+        final String queueName = QUEUE_NAME_PREFIX + keysAsString;
 
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
         declareDurableExchangeIn(channel);
-        final String tempUniqueQueueName = channel.queueDeclare().getQueue();
+        declareDurableQueueIn(channel, queueName);
 
         Set<String> routingKeys = getRoutingKeysFrom(keysAsString);
         for (String routingKey : routingKeys) {
-            channel.queueBind(tempUniqueQueueName, EXCHANGE_NAME, routingKey);
+            channel.queueBind(queueName, EXCHANGE_NAME, routingKey);
         }
 
         channel.basicQos(QOS_PREFETCH_COUNT);
 
         System.out.println("Before receiving");
-        Receiver receiver = Receiver.with(channel, tempUniqueQueueName);
+        Receiver receiver = Receiver.with(channel, queueName);
         receiver.startReceiving();
     }
 
@@ -49,6 +49,17 @@ public class Runner {
 
         //noinspection ConstantConditions
         channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.DIRECT, durable);
+    }
+
+    @SuppressWarnings("Duplicates")
+    private static void declareDurableQueueIn(Channel channel, String queueName) throws IOException {
+        final Boolean durable = true;
+        final Boolean exclusive = false;
+        final Boolean autoDelete = true;
+        final Map<String, Object> arguments = null;
+
+        //noinspection ConstantConditions
+        channel.queueDeclare(queueName, durable, exclusive, autoDelete, arguments);
     }
 
     private static Set<String> getRoutingKeysFrom(String string) {

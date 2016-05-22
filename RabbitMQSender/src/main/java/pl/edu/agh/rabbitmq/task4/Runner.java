@@ -6,13 +6,18 @@ import com.rabbitmq.client.ConnectionFactory;
 import pl.edu.agh.rabbitmq.util.ExchangeType;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class Runner {
+    public static final Random RANDOM = new Random();
     private static final String EXCHANGE_NAME = "task4Exchange";
-    private static final int RED_MESSAGES_QUANTITY = 3;
-    private static final int GREEN_MESSAGES_QUANTITY = 5;
-    private static final int BLUE_MESSAGES_QUANTITY = 10;
+    private static final int ITERATIONS = 4;
+    private static final int RED_MESSAGES_QUANTITY = 1;
+    private static final int GREEN_MESSAGES_QUANTITY = 2;
+    private static final int BLUE_MESSAGES_QUANTITY = 2;
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -22,15 +27,13 @@ public class Runner {
 
         declareDurableExchangeIn(channel);
 
-        Sender producerRed = Sender.with(channel, EXCHANGE_NAME, RoutingKey.RED);
-        Sender producerGreen = Sender.with(channel, EXCHANGE_NAME, RoutingKey.GREEN);
-        Sender producerBlue = Sender.with(channel, EXCHANGE_NAME, RoutingKey.BLUE);
+        Sender senderRed = Sender.with(channel, EXCHANGE_NAME, RoutingKey.RED);
+        Sender senderGreen = Sender.with(channel, EXCHANGE_NAME, RoutingKey.GREEN);
+        Sender senderBlue = Sender.with(channel, EXCHANGE_NAME, RoutingKey.BLUE);
+        List<Sender> senders = Arrays.asList(senderRed, senderGreen, senderBlue);
 
         System.out.printf("Before publishing %d messages\n", RED_MESSAGES_QUANTITY);
-
-        producerRed.publishMessages(RED_MESSAGES_QUANTITY);
-        producerGreen.publishMessages(GREEN_MESSAGES_QUANTITY);
-        producerBlue.publishMessages(BLUE_MESSAGES_QUANTITY);
+        publishAll(senders, ITERATIONS);
 
         System.out.println("Messages published");
 
@@ -43,5 +46,17 @@ public class Runner {
 
         //noinspection ConstantConditions
         channel.exchangeDeclare(EXCHANGE_NAME, ExchangeType.DIRECT, durable);
+    }
+
+    private static void publishAll(List<Sender> senders, int iterations) throws IOException {
+        int counter = 1;
+        for (int i = 0; i < iterations; ++i) {
+            for (Sender sender : senders) {
+                if (RANDOM.nextBoolean()) {
+                    sender.publishMessage("message " + counter + " ");
+                    ++counter;
+                }
+            }
+        }
     }
 }

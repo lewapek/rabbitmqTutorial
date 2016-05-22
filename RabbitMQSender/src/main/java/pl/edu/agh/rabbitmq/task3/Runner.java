@@ -23,8 +23,8 @@ public class Runner {
 
         System.out.printf("Before publishing %d messages\n", MESSAGES_QUANTITY);
 
-        Sender producer = Sender.with(channel, EXCHANGE_NAME);
-        producer.publishMessages(MESSAGES_QUANTITY);
+        Sender sender = Sender.with(channel, EXCHANGE_NAME);
+        sender.publishMessages(MESSAGES_QUANTITY);
 
         System.out.println("Messages published");
 
