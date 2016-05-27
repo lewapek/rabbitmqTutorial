@@ -19,7 +19,7 @@ public class Runner {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        declareDurableExchangeIn(channel);
+        declareDurableFanoutExchangeIn(channel);
         final String tempUniqueQueueName = channel.queueDeclare().getQueue();
         channel.queueBind(tempUniqueQueueName, EXCHANGE_NAME, UNNECESSARY_ROUTING_KEY);
 
@@ -30,7 +30,7 @@ public class Runner {
         receiver.startReceiving();
     }
 
-    private static void declareDurableExchangeIn(Channel channel) throws IOException {
+    private static void declareDurableFanoutExchangeIn(Channel channel) throws IOException {
         final Boolean durable = true;
 
         //noinspection ConstantConditions

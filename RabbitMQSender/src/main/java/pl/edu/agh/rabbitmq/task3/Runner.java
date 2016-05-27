@@ -3,7 +3,6 @@ package pl.edu.agh.rabbitmq.task3;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import pl.edu.agh.rabbitmq.util.ExchangeType;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class Runner {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        declareDurableExchangeIn(channel);
+        declareDurableFanoutExchangeIn(channel);
 
         System.out.printf("Before publishing %d messages\n", MESSAGES_QUANTITY);
 
@@ -32,7 +31,7 @@ public class Runner {
         connection.close();
     }
 
-    private static void declareDurableExchangeIn(Channel channel) throws IOException {
+    private static void declareDurableFanoutExchangeIn(Channel channel) throws IOException {
         final Boolean durable = true;
 
         //noinspection ConstantConditions

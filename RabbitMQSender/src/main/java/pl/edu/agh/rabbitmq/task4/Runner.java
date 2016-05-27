@@ -22,14 +22,14 @@ public class Runner {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        declareDurableExchangeIn(channel);
+        declareDurableDirectExchangeIn(channel);
 
         Sender senderRed = Sender.with(channel, EXCHANGE_NAME, RoutingKey.RED);
         Sender senderGreen = Sender.with(channel, EXCHANGE_NAME, RoutingKey.GREEN);
         Sender senderBlue = Sender.with(channel, EXCHANGE_NAME, RoutingKey.BLUE);
         List<Sender> senders = Arrays.asList(senderRed, senderGreen, senderBlue);
 
-        System.out.println("Before publishing %d messages");
+        System.out.println("Before publishing messages");
         publishAll(senders, ITERATIONS);
 
         System.out.println("Messages published");
@@ -38,7 +38,7 @@ public class Runner {
         connection.close();
     }
 
-    private static void declareDurableExchangeIn(Channel channel) throws IOException {
+    private static void declareDurableDirectExchangeIn(Channel channel) throws IOException {
         final Boolean durable = true;
 
         //noinspection ConstantConditions

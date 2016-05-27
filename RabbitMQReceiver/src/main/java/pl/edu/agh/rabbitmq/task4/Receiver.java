@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 class Receiver {
-    private static final Random RANDOM = new Random();
     private static final int SLEEP_TIME_BASE_SECONDS = 2;
     private static final int SLEEP_TIME_MAX_ADDITIONAL_SECONDS = 10;
 

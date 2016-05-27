@@ -1,4 +1,4 @@
-package pl.edu.agh.rabbitmq.task3;
+package pl.edu.agh.rabbitmq.task5;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -10,7 +10,6 @@ import pl.edu.agh.rabbitmq.util.Utils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 class Receiver {
     private static final int SLEEP_TIME_BASE_SECONDS = 2;
