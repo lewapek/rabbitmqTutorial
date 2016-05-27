@@ -4,10 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author lewap
- * @since 27.05.16.
- */
 class ArgsParser {
 
     private final String queueNamePrefix;
