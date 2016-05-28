@@ -29,9 +29,9 @@ class ArgsParser {
         final int size = preparedArgs.size();
         if (size > 1) {
             String currentArgument = preparedArgs.remove(size - 1);
-            return composeQueueNameFrom(preparedArgs) + "OR" + replaceRabbitRegexCharactersFrom(currentArgument);
+            return composeQueueNameFrom(preparedArgs) + "OR" + currentArgument;
         } else {
-            return queueNamePrefix + replaceRabbitRegexCharactersFrom(preparedArgs.get(0));
+            return queueNamePrefix + preparedArgs.get(0);
         }
     }
 
