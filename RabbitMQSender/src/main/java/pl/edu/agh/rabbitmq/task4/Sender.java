@@ -22,6 +22,10 @@ class Sender {
         return new Sender(channel, exchangeName, routingKey);
     }
 
+    String getRoutingKey() {
+        return routingKey;
+    }
+
     void publishMessage(String message) throws IOException {
         final String messageToSend = message + "[" + routingKey + "]";
         channel.basicPublish(exchangeName, routingKey, properties, messageToSend.getBytes());

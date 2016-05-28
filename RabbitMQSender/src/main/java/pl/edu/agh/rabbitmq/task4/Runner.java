@@ -50,6 +50,7 @@ public class Runner {
         for (int i = 0; i < iterations; ++i) {
             for (Sender sender : senders) {
                 if (RANDOM.nextBoolean()) {
+                    System.out.printf("  publishing %d: %s message\n", counter, sender.getRoutingKey());
                     sender.publishMessage("message " + counter + " ");
                     ++counter;
                 }
