@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+group = 'RabbitMQTutorial'
+version = '1.0-SNAPSHOT'
+
+description = """"""
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.1'
+}
+
+task execute(type:JavaExec) {
+    main = System.getProperty("mainClass")
+    classpath = sourceSets.main.runtimeClasspath
+}
