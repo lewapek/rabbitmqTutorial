@@ -1,4 +1,4 @@
-package pl.edu.agh.rabbitmq.task1;
+package pl.edu.agh.rabbitmq.task1.sender;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
