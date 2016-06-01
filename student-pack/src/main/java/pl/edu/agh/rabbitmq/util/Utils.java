@@ -11,8 +11,9 @@ public class Utils {
         int totalSeconds = seconds + additionalSeconds;
 
         System.out.printf("  Sleeping for %d seconds\n", totalSeconds);
+        System.out.print("    seconds left");
         for (int secondsLeft = totalSeconds; secondsLeft >= 0; --secondsLeft) {
-            System.out.printf("\r    seconds left: %02d", secondsLeft);
+            System.out.printf(" -> %02d", secondsLeft);
             TimeUnit.SECONDS.sleep(1);
         }
         System.out.println();
