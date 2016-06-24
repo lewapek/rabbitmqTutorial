@@ -3,6 +3,7 @@ package pl.edu.agh.rabbitmq.task5.sender;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import pl.edu.agh.rabbitmq.util.ConfigurationProperties;
 import pl.edu.agh.rabbitmq.util.ExchangeType;
 
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class Runner {
     }
 
     public static void main(String[] args) throws IOException, TimeoutException {
+        ConfigurationProperties configurationProperties = new ConfigurationProperties();
+        connectionFactory.setHost(configurationProperties.getRabbitHost());
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
