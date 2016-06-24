@@ -16,4 +16,7 @@ dependencies {
 task execute(type:JavaExec) {
     main = System.getProperty("mainClass")
     classpath = sourceSets.main.runtimeClasspath
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
 }

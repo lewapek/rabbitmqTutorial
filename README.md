@@ -9,7 +9,7 @@ To run specific Runner first build project with
   
   and then run
 
-  gradlew execute -DmainClass=pl.edu.agh.rabbitmq.task1.receiver.Runner
+  gradlew execute -DmainClass=pl.edu.agh.rabbitmq.task1.receiver.Runner [-PappArgs="['arg1', 'arg2']"]
 
 where mainClass can be different.
 
